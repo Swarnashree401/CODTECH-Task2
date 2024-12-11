@@ -33,5 +33,5 @@ Here are the key technologies typically used in such apps:
 
 ![screenshot](https://github.com/Swarnashree401/CODTECH-Task2/blob/main/Screenshot%20(7).png?raw=true)
 
-![screenshot](
+![screenshot](https://github.com/Swarnashree401/CODTECH-Task2/blob/main/Screenshot%20(8).png?raw=true)
 
