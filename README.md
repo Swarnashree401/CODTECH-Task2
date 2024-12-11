@@ -29,3 +29,6 @@ Here are the key technologies typically used in such apps:
 3. Health Data APIs
 4. Data Analytics and Insights
 5. Database Management
+
+
+![screenshot](https://github.com/Swarnashree401/CODTECH-Task2/blob/main/Screenshot%20(7).png?raw=true)
