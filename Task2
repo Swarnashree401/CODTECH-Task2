@@ -1,0 +1,373 @@
+/*/ this is html code which is the main entry point of the website /*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A user-friendly fitness tracker to monitor workouts, view statistics, and track progress.">
+    <meta name="author" content="Your Name">
+    <title>Fitness Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Fitness Tracker</h1>
+        <nav>
+            <ul>
+                <li><a href="#tracker">Track Workout</a></li>
+                <li><a href="#statistics">Statistics</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="tracker" class="tracker">
+            <h2>Track Your Workout</h2>
+            <form id="workoutForm">
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exercise">Exercise:</label>
+                    <select id="exercise" name="exercise" required>
+                        <option value="running">Running</option>
+                        <option value="cycling">Cycling</option>
+                        <option value="swimming">Swimming</option>
+                        <option value="weightlifting">Weightlifting</option>
+                        <option value="yoga">Yoga</option>
+                        <option value="hiking">Hiking</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Duration (minutes):</label>
+                    <input type="number" id="duration" name="duration" min="1" max="300" required>
+                </div>
+
+                <button type="submit">Add Workout</button>
+            </form>
+
+            <div id="workoutList">
+                <h3>Workout History</h3>
+                <ul>
+                    <!-- Workout items will be dynamically added here -->
+                </ul>
+            </div>
+        </section>
+
+        <section id="statistics" class="statistics">
+            <h2>Statistics</h2>
+            <p id="totalWorkouts">Total Workouts: 0</p>
+            <p id="totalDuration">Total Duration: 0 minutes</p>
+            <p id="averageDuration">Average Duration: 0 minutes</p>
+            <p id="totalCalories">Total Calories Burned: 0 kcal</p>
+            <h3>Exercise Breakdown</h3>
+            <ul id="specificExerciseTotals">
+                <!-- Exercise-specific totals will be added dynamically -->
+            </ul>
+
+            <div class="charts">
+                <div>
+                    <h3>Exercise Distribution</h3>
+                    <canvas id="exerciseChart" aria-label="Chart showing exercise distribution"></canvas>
+                </div>
+                <div>
+                    <h3>Workout Frequency</h3>
+                    <canvas id="frequencyChart" aria-label="Chart showing workout frequency"></canvas>
+                </div>
+                <div>
+                    <h3>Progress Over Time</h3>
+                    <canvas id="progressChart" aria-label="Chart showing progress over time"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About Fitness Tracker</h2>
+            <p>Fitness Tracker is a simple tool to help you monitor your workouts, set goals, and analyze progress over time. Whether you're a beginner or an experienced athlete, this tracker makes it easy to stay on top of your fitness journey.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Fitness Tracker | Built with love and dedication</p>
+        <nav>
+            <ul>
+                <li><a href="#tracker">Track Workout</a></li>
+                <li><a href="#statistics">Statistics</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+/*/ This is styles.css file /*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.tracker {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #555;
+}
+
+#workoutList ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#workoutList li {
+    background: #f4f4f4;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+#statistics {
+    margin-top: 20px;
+}
+
+#exerciseChart {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/*/ This is script.js file which is used to store javasctipt code /*/
+
+document.addEventListener('DOMContentLoaded', function() {
+    const workoutForm = document.getElementById('workoutForm');
+    const workoutList = document.querySelector('#workoutList ul');
+    const totalWorkouts = document.getElementById('totalWorkouts');
+    const totalDuration = document.getElementById('totalDuration');
+    const averageDuration = document.getElementById('averageDuration');
+    const totalCalories = document.getElementById('totalCalories');
+    const specificExerciseTotals = document.getElementById('specificExerciseTotals');
+    const exerciseChartCtx = document.getElementById('exerciseChart').getContext('2d');
+    const frequencyChartCtx = document.getElementById('frequencyChart').getContext('2d');
+    const progressChartCtx = document.getElementById('progressChart').getContext('2d');
+    let exerciseChart, frequencyChart, progressChart;
+
+    // Load workouts from local storage
+    loadWorkouts();
+
+    workoutForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const date = document.getElementById('date').value;
+        const exercise = document.getElementById('exercise').value;
+        const duration = document.getElementById('duration').value;
+        const calories = document.getElementById('calories').value;
+
+        if (date && exercise && duration && calories) {
+            const workoutItem = createWorkoutItem(date, exercise, duration, calories);
+            workoutList.appendChild(workoutItem);
+
+            saveWorkout(date, exercise, duration, calories);
+            updateStatistics();
+
+            workoutForm.reset();
+        }
+    });
+
+    function createWorkoutItem(date, exercise, duration, calories) {
+        const workoutItem = document.createElement('li');
+        workoutItem.textContent = `${date} - ${exercise} for ${duration} minutes, ${calories} kcal`;
+        return workoutItem;
+    }
+
+    function saveWorkout(date, exercise, duration, calories) {
+        const workouts = getWorkouts();
+        workouts.push({ date, exercise, duration: parseInt(duration), calories: parseInt(calories) });
+        localStorage.setItem('workouts', JSON.stringify(workouts));
+    }
+
+    function getWorkouts() {
+        const workouts = localStorage.getItem('workouts');
+        return workouts ? JSON.parse(workouts) : [];
+    }
+
+    function loadWorkouts() {
+        const workouts = getWorkouts();
+        workouts.forEach(workout => {
+            const workoutItem = createWorkoutItem(workout.date, workout.exercise, workout.duration, workout.calories);
+            workoutList.appendChild(workoutItem);
+        });
+        updateStatistics();
+    }
+
+    function updateStatistics() {
+        const workouts = getWorkouts();
+        const total = workouts.reduce((acc, workout) => acc + workout.duration, 0);
+        const totalKcal = workouts.reduce((acc, workout) => acc + workout.calories, 0);
+        const average = total / (workouts.length || 1);
+
+        totalWorkouts.textContent = `Total Workouts: ${workouts.length}`;
+        totalDuration.textContent = `Total Duration: ${total} minutes`;
+        averageDuration.textContent = `Average Duration: ${average.toFixed(2)} minutes`;
+        totalCalories.textContent = `Total Calories: ${totalKcal} kcal`;
+
+        const exerciseTotals = workouts.reduce((acc, workout) => {
+            if (!acc[workout.exercise]) {
+                acc[workout.exercise] = 0;
+            }
+            acc[workout.exercise] += workout.duration;
+            return acc;
+        }, {});
+
+        specificExerciseTotals.innerHTML = Object.entries(exerciseTotals)
+            .map(([exercise, duration]) => `<li>${exercise}: ${duration} minutes</li>`)
+            .join('');
+
+        updateExerciseChart(exerciseTotals);
+        updateFrequencyChart(workouts);
+        updateProgressChart(workouts);
+    }
+
+    function updateExerciseChart(exerciseTotals) {
+        if (exerciseChart) {
+            exerciseChart.destroy();
+        }
+
+        exerciseChart = new Chart(exerciseChartCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(exerciseTotals),
+                datasets: [{
+                    label: 'Exercise Duration',
+                    data: Object.values(exerciseTotals),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    function updateFrequencyChart(workouts) {
+        const frequencyData = workouts.reduce((acc, workout) => {
+            if (!acc[workout.exercise]) {
+                acc[workout.exercise] = 0;
+            }
+            acc[workout.exercise] += 1;
+            return acc;
+        }, {});
+
+        if (frequencyChart) {
+            frequencyChart.destroy();
+        }
+
+        frequencyChart = new Chart(frequencyChartCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(frequencyData),
+                datasets: [{
+                    label: 'Frequency',
+                    data: Object.values(frequencyData),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function updateProgressChart(workouts) {
+        const weeklyData = workouts.reduce((acc, workout) => {
+            const week = new Date(workout.date).toISOString().slice(0, 10);
+            if (!acc[week]) {
+                acc[week] = 0;
+            }
+            acc[week] += workout.duration;
+            return acc;
+        }, {});
+
+        const sortedWeeks = Object.keys(weeklyData).sort();
+        const weeklyDurations = sortedWeeks.map(week => weeklyData[week]);
+
+        if (progressChart) {
+            progressChart.destroy();
+        }
+
+        progressChart = new Chart(progressChartCtx, {
+            type: 'line[_{{{CITATION{{{_1{](https://github.com/Hamidalavi/JavaScript-step-by-step/tree/6a97d943bd685e48622cba622ec7450152d33664/Learn%2F24.%20NodeJS%20Introduction.md)[_{{{CITATION{{{_2{](https://github.com/Gisjegadeesh/Tradecomm/tree/94271f9169033d5103bc9e7a4dd658840bd656a0/src%2Fapp%2Fcomponents%2Fsme-dashboard%2Fsme-dashboard.component.ts)[_{{{CITATION{{{_3{](https://github.com/ValerioFarina/laravel-ecommerce/tree/2c1bc79cb23a6efdc9d4260784088aaf8965c14f/resources%2Fjs%2Fpages%2Fstatistics.js)[_{{{CITATION{{{_4{](https://github.com/chetansingare/first-app/tree/70e988e15c20f68194bfddfbf07694427db430c0/src%2Fcomponents%2Fchart2%2Ftopseller%2FTopSellers.js)[_{{{CITATION{{{_5{](https://github.com/starand/scrm/tree/b5f52ad7da4a3d89a4a67572746d2055f494bb19/wallet.php)[_{{{CITATION{{{_6{](https://github.com/BenBanerjeeRichards/Spotify-history-downloader/tree/68673b719c6c0e0124bad5099f188ad26310107c/client%2Fday.js)
+            document.addEventListener('DOMContentLoaded', function() {
+                const workoutForm = document.getElementById('workoutForm');
+                const workoutList = document.querySelector('#workoutList ul');
+                const totalWorkouts = document.getElementById('totalWorkouts');
+                const totalDuration = document.getElementById('totalDuration'0);
